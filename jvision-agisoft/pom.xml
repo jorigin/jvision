@@ -103,6 +103,13 @@
       <id>jorigin-jvision-local</id>
       <url>file://${basedir}/lib</url>
     </repository>
+    
+    <!-- JOrigin repository -->          
+    <repository>
+      <id>jorigin</id>
+      <name>jorigin-maven</name>
+      <url>http://maven.jorigin.org</url>
+    </repository>
   </repositories>
   
   <dependencies>
@@ -114,10 +121,18 @@
       <version>${jvision.version}</version>
     </dependency>
   
+  
+    <!-- The Agisoft Metashape Java  Wrapper -->
+    <dependency>
+      <groupId>com.agisoft</groupId>
+      <artifactId>metashape</artifactId>
+      <version>1.7.2</version>
+    </dependency>
+  
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -130,7 +145,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>${maven.plugin.compiler.version}</version>
         <configuration>
           <release>${maven.compiler.release}</release>
           <source>${maven.compiler.source}</source>
@@ -183,7 +198,7 @@
       <!--  Distribution management -->
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>${maven.plugin.deploy.version}</version>
         <executions>
           <execution>
             <id>default-deploy</id>
@@ -211,7 +226,7 @@
           <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>1.9.5</version>
+            <version>${maven.plugin.scm-provider-gitexe.version}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -220,7 +235,7 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
+        <version>${maven.plugin.nexus.version}</version>
         <extensions>true</extensions>
         
         <configuration>

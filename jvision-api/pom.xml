@@ -111,31 +111,25 @@
     <dependency>
       <groupId>org.jorigin</groupId>
       <artifactId>jcommon</artifactId>
-      <version>1.0.12</version>
+      <version>${jcommon.version}</version>
     </dependency>
   
     <dependency>
       <groupId>org.jorigin</groupId>
       <artifactId>jeometry-api</artifactId>
-      <version>1.0.4</version>
+      <version>${jeometry.version}</version>
     </dependency>
   
     <dependency>
       <groupId>org.jorigin</groupId>
       <artifactId>jeometry-simple</artifactId>
-      <version>1.0.4</version>
-    </dependency>
-  
-    <dependency>
-      <groupId>vision</groupId>
-      <artifactId>opencv</artifactId>
-      <version>3.1.0</version>
+      <version>${jeometry.version}</version>
     </dependency>
   
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -148,7 +142,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>${maven.plugin.compiler.version}</version>
         <configuration>
           <release>${maven.compiler.release}</release>
           <source>${maven.compiler.source}</source>
@@ -201,7 +195,7 @@
       <!--  Distribution management -->
       <plugin>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.8.2</version>
+        <version>${maven.plugin.deploy.version}</version>
         <executions>
           <execution>
             <id>default-deploy</id>
@@ -229,7 +223,7 @@
           <dependency>
             <groupId>org.apache.maven.scm</groupId>
             <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>1.9.5</version>
+            <version>${maven.plugin.scm-provider-gitexe.version}</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -238,7 +232,7 @@
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
+        <version>${maven.plugin.nexus.version}</version>
         <extensions>true</extensions>
         
         <configuration>
