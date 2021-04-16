@@ -82,7 +82,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
+						<version>${maven.plugin.gpg.version}</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -131,11 +131,12 @@
     </dependency>
   
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+    
   </dependencies>
   
   <build>
@@ -215,6 +216,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
+        <version>${maven.plugin.release.version}</version>
         
         <configuration>
           <localCheckout>true</localCheckout>

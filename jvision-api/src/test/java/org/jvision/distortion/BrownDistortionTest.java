@@ -1,6 +1,6 @@
 package org.jvision.distortion;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.jeometry.factory.JeometryFactory;
 import org.jeometry.geom2D.point.Point2D;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.jvision.JVision;
 
 /**
@@ -32,7 +32,7 @@ public class BrownDistortionTest{
   /**
    * Initialize the tests
    */
-  @BeforeClass
+  @BeforeAll
   public static void initTest(){
     observedPoints = new ArrayList<Point2D>(4);
     
@@ -63,8 +63,8 @@ public class BrownDistortionTest{
     
     corrected = distortion.undistort(reference);
     
-    assertEquals("Undistort is not invariant for reference point ("+reference.getX()+", "+reference.getY()+"): ("+corrected.getX()+", "+corrected.getY()+").", reference.getX(), corrected.getX(), NUMERIC_PRECISION);
-    assertEquals("Undistort is not invariant for reference point ("+reference.getX()+", "+reference.getY()+"): ("+corrected.getX()+", "+corrected.getY()+").", reference.getY(), corrected.getY(), NUMERIC_PRECISION);
+    assertEquals(reference.getX(), corrected.getX(), NUMERIC_PRECISION, "Undistort is not invariant for reference point ("+reference.getX()+", "+reference.getY()+"): ("+corrected.getX()+", "+corrected.getY()+").");
+    assertEquals(reference.getY(), corrected.getY(), NUMERIC_PRECISION, "Undistort is not invariant for reference point ("+reference.getX()+", "+reference.getY()+"): ("+corrected.getX()+", "+corrected.getY()+").");
 
     
   }
@@ -92,8 +92,8 @@ public class BrownDistortionTest{
         distorted = distortion.distort(corrected);
       }
    
-      assertEquals("Distort / Undistort is not stable for reference point ("+reference.getX()+", "+reference.getY()+"): ("+distorted.getX()+", "+distorted.getY()+").", reference.getX(), distorted.getX(), NUMERIC_PRECISION);
-      assertEquals("Distort / Undistort is not stable for reference point ("+reference.getX()+", "+reference.getY()+"): ("+distorted.getX()+", "+distorted.getY()+").", reference.getY(), distorted.getY(), NUMERIC_PRECISION);
+      assertEquals(reference.getX(), distorted.getX(), NUMERIC_PRECISION, "Distort / Undistort is not stable for reference point ("+reference.getX()+", "+reference.getY()+"): ("+distorted.getX()+", "+distorted.getY()+").");
+      assertEquals(reference.getY(), distorted.getY(), NUMERIC_PRECISION, "Distort / Undistort is not stable for reference point ("+reference.getX()+", "+reference.getY()+"): ("+distorted.getX()+", "+distorted.getY()+").");
     }
   }
 }
