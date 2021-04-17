@@ -15,7 +15,7 @@ public class JVisionUtil {
    * Get the dimension of a sensor frame in millimeters (mm) 
    * from a dimension expressed as a fraction of an inch (1/3, 1/4, ...) and an aspect ratio. 
    * If the ratio is not known, standard ratio can be used such as 4/3 for compact cameras / video recorders 
-   * or 3/2 for professional cameras. Please be warned that the ratio has to be given in double format (4.0d/3.0d).
+   * or 3/2 for professional cameras. Please be warned that the aspect ratio has to be given in double format (4.0d/3.0d).
    * @param format the format expressed as a fraction of an inch.
    * @param ratio the ratio of the width / height of the sensor (3/2, 4/3, ...).
    * @return the dimension in millimeters of the sensor.
