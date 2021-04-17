@@ -12,7 +12,7 @@ import java.util.logging.StreamHandler;
 /**
  * This class contains static information about the JOrigin Vision package. The logging system of the whole package is handled 
  * by this class and is it possible to change the internal logger with method {@link #setLogger(Logger)}.
- * @author Julien Seinturier - COMEX S.A. - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jeometry">https://github.com/jorigin/jeometry</a>
+ * @author Julien Seinturier - JOrigin - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jvision">https://github.com/jorigin/jvision</a>
  * @version {@value JVision#version} b{@value JVision#BUILD}
  * @since 1.0.0
  */

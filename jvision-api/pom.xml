@@ -100,22 +100,9 @@
   
   <dependencies>
   
-    <!--  Common package for basic operations -->
-    <dependency>
-      <groupId>org.jorigin</groupId>
-      <artifactId>jcommon</artifactId>
-      <version>${jcommon.version}</version>
-    </dependency>
-  
     <dependency>
       <groupId>org.jorigin</groupId>
       <artifactId>jeometry-api</artifactId>
-      <version>${jeometry.version}</version>
-    </dependency>
-  
-    <dependency>
-      <groupId>org.jorigin</groupId>
-      <artifactId>jeometry-simple</artifactId>
       <version>${jeometry.version}</version>
     </dependency>
   

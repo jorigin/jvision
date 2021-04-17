@@ -1,11 +1,13 @@
 package org.jvision.sensor.camera;
 
 import org.jeometry.geom2D.point.Point2D;
+import org.jvision.JVision;
 import org.jvision.sensor.Sensor;
 
 /**
  * A digital camera {@link Sensor sensor}. Such a sensor is made of a rectangular frame that can produce digital images. 
- * @author Julien Seinturier - COMEX S.A. - http://www.seinturier.fr
+ * @author Julien Seinturier - JOrigin - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jvision">https://github.com/jorigin/jvision</a>
+ * @version {@value JVision#version} b{@value JVision#BUILD}
  */
 public interface DigitalCameraSensor extends Sensor {
 

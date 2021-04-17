@@ -1,4 +1,4 @@
-package org.jvision.distortion;
+package org.jvision.camera.distortion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,17 +13,17 @@ import org.junit.jupiter.api.Test;
 import org.jvision.JVision;
 
 /**
- * A test dedicated to {@link BrownDistortion BrownDistortion} class.
- * @author Julien Seinturier - COMEX S.A. - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jeometry">https://github.com/jorigin/jeometry</a>
+ * A test dedicated to {@link SimpleBrownDistortion BrownDistortion} class.
+ * @author Julien Seinturier - JOrigin - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jvision">https://github.com/jorigin/jvision</a>
  * @version {@value JVision#version} b{@value JVision#BUILD}
  * @since 1.0.0
  *
  */
-public class BrownDistortionTest{
+public class SimpleBrownDistortionTest{
 
   static List<Point2D> observedPoints;
   
-  static BrownDistortion distortion;
+  static SimpleBrownDistortion distortion;
   
   static final double NUMERIC_PRECISION = 0.001d;
   
@@ -50,7 +50,7 @@ public class BrownDistortionTest{
       observedPoints.add(JeometryFactory.createPoint2D(0.0d, -i));
     }
 
-    distortion = new BrownDistortion("standard", -0.1047, 0.25263, -0.0385946, 0.0, 0.000508056, -0.0027698, 0.0d, 0.0d);
+    distortion = new SimpleBrownDistortion("standard", -0.1047, 0.25263, -0.0385946, 0.0, 0.000508056, -0.0027698, 0.0d, 0.0d);
   }
   
   /**

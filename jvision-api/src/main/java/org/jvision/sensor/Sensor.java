@@ -1,9 +1,11 @@
 package org.jvision.sensor;
 
+import org.jvision.JVision;
 
 /**
  * A sensor represents an identified device that can produce data along modalities. 
- * @author Julien Seinturier - COMEX S.A. - http://www.seinturier.fr
+ * @author Julien Seinturier - JOrigin - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jvision">https://github.com/jorigin/jvision</a>
+ * @version {@value JVision#version} b{@value JVision#BUILD}
  */
 public interface Sensor {
 

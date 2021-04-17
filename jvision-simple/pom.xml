@@ -98,20 +98,13 @@
 		</profile>
   </profiles>
   
-  <repositories>
-    <repository>
-      <id>jorigin-jvision-local</id>
-      <url>file://${basedir}/lib</url>
-    </repository>
-  </repositories>
-  
   <dependencies>
-  
+   
     <!--  Common package for basic operations -->
     <dependency>
       <groupId>org.jorigin</groupId>
       <artifactId>jvision-api</artifactId>
-      <version>${jvision.version}</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
   
     <dependency>

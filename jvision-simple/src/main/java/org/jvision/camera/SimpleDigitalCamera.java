@@ -7,21 +7,22 @@ import java.util.Map;
 
 import org.jeometry.geom2D.point.Point2D;
 import org.jvision.JVision;
-import org.jvision.distortion.LensDistortion;
+import org.jvision.camera.distortion.LensDistortion;
 import org.jvision.sensor.camera.DigitalCameraSensor;
 
 /**
- * A digital camera that describe an Agisoft (c) camera.
- * @author Julien Seinturier - COMEX S.A. - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jeometry">https://github.com/jorigin/jeometry</a>
- * @version {@value JVision#version}
+ * Default implementation of a {@link DigitalCamera}. 
+ * For a complete description of the digital camera model, please refers to {@link DigitalCamera DigitialCamera interface} documentation.
+ * @author Julien Seinturier - JOrigin - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jvision">https://github.com/jorigin/jvision</a>
+ * @version {@value JVision#version} b{@value JVision#BUILD}
  * @since 1.0.0
  */
-public class AgisoftMetashapeCamera implements DigitalCamera{
+public class SimpleDigitalCamera implements DigitalCamera{
 
 	private static int CAMERA_NUMBER = 1;
 	
-	private String name = "AgisoftCamera";
-	
+	private String name               = "";
+
 	private int identifier            = CAMERA_NUMBER;
 	
 	private String model              = "";
@@ -31,26 +32,25 @@ public class AgisoftMetashapeCamera implements DigitalCamera{
 	private String serial             = "";
 
 	private DigitalCameraSensor sensor = null;
-
+	
 	private float focalLength         = 1.0f;
 	private double focalLengthMetric  = 0.0d; 
 
 	private Point2D principalPointOffset = null;
-	
+
+	/**
+	 * The affinity.
+	 */
 	private double affinity = 0.0d;
 
+	/**
+	 * The non-orthogonality (skew).
+	 */
 	private double skew = 0.0d;
 
 	private LensDistortion distortion = null;
 
 	private Map<String, Object> userProperties;
-	
-	/**
-	 * Create a new digital camera that represents an Agisoft(c) camera. Such a camera is used within Metashape(c) or AgiLens(c) softwares.
-	 */
-    public AgisoftMetashapeCamera() {
-    	
-    }
 	
 	@Override
 	public String getName() {
@@ -227,6 +227,72 @@ public class AgisoftMetashapeCamera implements DigitalCamera{
 	public Point2D undistort(Point2D point, boolean ppOffsetCorrection) {
 		// TODO implements SimpleDigitalCamera.undistort(Point2D, boolean)
 		return null;
+	}
+
+	/**
+	 * Create a new digital camera with given parameters.
+	 * @param sensor the {@link DigitalCameraSensor camera sensor}
+	 * @param focalLength the focal length in pixels (px) of the camera
+	 * @param principalPointOffset the offset of the principal point of the camera
+	 * @param affinity the the differential scaling between the horizontal and vertical pixel spacings
+	 * @param skew the non-orthogonality (skew coefficient)
+	 * @param distortion the lens distortion that affect the camera
+	 */
+	public SimpleDigitalCamera(DigitalCameraSensor sensor, float focalLength, Point2D principalPointOffset, double affinity, double skew, LensDistortion distortion){
+        this.sensor = sensor;
+
+		this.focalLength = focalLength;
+		this.principalPointOffset = principalPointOffset;
+
+		this.affinity = affinity;
+		this.skew = skew;
+
+		this.distortion = distortion;
+
+		name = "DigitalCamera_"+CAMERA_NUMBER;
+
+		checkCamera();
+	}
+
+	/**
+	 * Check and update camera internal data. This method is called when a camera parameter is changed. 
+	 * If some parameter is not consistent (null or 0 image size, frame size, 0 or less focal length...), 
+	 * an {@link IllegalArgumentException IllegalArgumentException} is raised.
+	 */
+	public void checkCamera(){
+		//TODO Implements check camera
+/*
+		// Check the validity of the parameters.
+		if (imageSize == null){
+			if (imageSize.getWidth() <= 0){
+				throw new IllegalArgumentException("Image width of the camera should be greater than 0px.");
+			} else if (imageSize.getHeight() <= 0){
+				throw new IllegalArgumentException("Image height of the camera should be greater than 0px.");
+			}
+		} else {
+			throw new IllegalArgumentException("Image size of the camera should not be null.");
+		}
+
+		if (frameSize == null){
+			if (frameSize.getWidth() <= 0){
+				throw new IllegalArgumentException("Sensor frame width of the camera should be greater than 0mm.");
+			} else if (frameSize.getHeight() <= 0){
+				throw new IllegalArgumentException("Sensor frame height of the camera should be greater than 0mm.");
+			}
+		} else {
+			throw new IllegalArgumentException("Image size of the camera should not be null.");
+		}
+
+		if (focalLength <= 0){
+			throw new IllegalArgumentException("IThe focal length of the camera should be grater than 0mm.");
+		}
+
+		// Update internal data
+		pixelWidth        = frameSize.getWidth() / imageSize.getWidth(); 
+		pixelHeight       = frameSize.getHeight() / imageSize.getHeight();
+
+		focalLengthMetric = focalLength * pixelWidth;
+*/
 	}
 
 	@Override

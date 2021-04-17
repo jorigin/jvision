@@ -5,7 +5,7 @@ import org.jorigin.identification.Identified;
 import org.jorigin.identification.Named;
 import org.jorigin.property.HandleUserProperties;
 import org.jvision.JVision;
-import org.jvision.distortion.LensDistortion;
+import org.jvision.camera.distortion.LensDistortion;
 import org.jvision.sensor.camera.DigitalCameraSensor;
 
 /**
@@ -52,7 +52,7 @@ import org.jvision.sensor.camera.DigitalCameraSensor;
  * 
  * Camera model description can be found within document <a href="http://info.asprs.org/publications/proceedings/Sacramento2012/files/Fraser.pdf">Automatic Camera Calibration In Close-range Photogrammetry</a> 
  * by Clive S. Fraser.
- * @author Julien Seinturier - COMEX S.A. - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jeometry">https://github.com/jorigin/jeometry</a>
+ * @author Julien Seinturier - JOrigin - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jvision">https://github.com/jorigin/jvision</a>
  * @version {@value JVision#version} b{@value JVision#BUILD}
  * @since 1.0.0
  */
@@ -180,18 +180,18 @@ public interface DigitalCamera extends Named, Identified, HandleUserProperties {
 	public abstract void setSkew(double nonOrthogonality);
 
 	/**
-	 * Get the {@link org.jvision.distortion.LensDistortion lens distortion} attached to this camera.
+	 * Get the {@link LensDistortion lens distortion} attached to this camera.
 	 * @return the {@link LensDistortion lens distortion} attached to this camera.
 	 * @see #setLensDistortion(LensDistortion)
-	 * @see org.jvision.distortion.LensDistortion
+	 * @see LensDistortion
 	 */
 	public abstract LensDistortion getLensDistortion();
 
 	/**
-	 * Set the {@link org.jvision.distortion.LensDistortion lens distortion} attached to this camera.
+	 * Set the {@link LensDistortion lens distortion} attached to this camera.
 	 * @param distortion the {@link LensDistortion lens distortion} attached to this camera.
 	 * @see #getLensDistortion()
-	 * @see org.jvision.distortion.LensDistortion
+	 * @see LensDistortion
 	 */
 	public abstract void setLensDistortion(LensDistortion distortion);
 

@@ -53,8 +53,8 @@
     <maven.plugin.source.version>3.2.0</maven.plugin.source.version>
     <maven.plugin.surefire.version>3.0.0-M4</maven.plugin.surefire.version>
     
-    <jcommon.version>1.0.12</jcommon.version>
-    <jeometry.version>1.0.4</jeometry.version>   
+    <jcommon.version>1.0.13</jcommon.version>
+    <jeometry.version>1.0.5</jeometry.version>   
     
     <junit.version>5.7.1</junit.version>
     <junit.jupiter.version>5.7.1</junit.jupiter.version>
@@ -120,17 +120,6 @@
       </build>
     </profile>
   </profiles>
-  
-  <repositories>
-    <repository>
-      <id>jorigin-geometry-local</id>
-      <url>file://${basedir}/lib</url>
-    </repository>
-  </repositories>
-  
-  <dependencies>
-  
-  </dependencies>
   
   <build>
     <plugins>

@@ -1,33 +1,43 @@
 package org.jvision.geometry;
 
-import java.awt.geom.Dimension2D;
-
 import org.jvision.JVision;
 
 /**
  * An implementation of {@link java.awt.geom.Dimension2D Dimension2D} that enables to be constructed with double values.
- * @author Julien Seinturier - COMEX S.A. - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jeometry">https://github.com/jorigin/jeometry</a>
+ * @author Julien Seinturier - JOrigin - <a href="mailto:contact@jorigin.org">contact@jorigin.org</a> - <a href="https://github.com/jorigin/jvision">https://github.com/jorigin/jvision</a>
  * @version {@value JVision#version} b{@value JVision#BUILD}
  * @since 1.0.0
  *
  */
-public class Dimension2Dd extends Dimension2D{
+public class Dimension2Dd {
 
   double width;
   
   double height;
   
-  @Override
+  /**
+   * Get the width of this dimension.
+   * @return  the width of this dimension
+   * @see #getHeight()
+   */
   public double getWidth() {
     return width;
   }
 
-  @Override
+  /**
+   * Get the height of this dimension.
+   * @return the height of this dimension
+   * @see #getWidth()
+   */
   public double getHeight() {
     return height;
   }
 
-  @Override
+  /**
+   * Set the size of this dimension.
+   * @param width the width of this dimension
+   * @param height the height of this dimension
+   */
   public void setSize(double width, double height) {
     this.width  = width;
     this.height = height;
@@ -35,7 +45,7 @@ public class Dimension2Dd extends Dimension2D{
 
   /**
    * Returns a string representation of the values of this
-   * <code>Dimension2Dd</code> object's <code>height</code> and
+   * <code>Dimension2D</code> object's <code>height</code> and
    * <code>width</code> fields. This method is intended to be used only
    * for debugging purposes, and the content and format of the returned
    * string may vary between implementations. The returned string may be

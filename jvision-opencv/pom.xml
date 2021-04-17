@@ -99,12 +99,6 @@
   </profiles>
   
   <repositories>
-  
-    <!--  local -->
-    <repository>
-      <id>jorigin-jvision-local</id>
-      <url>file://${basedir}/repository</url>
-    </repository>
     
     <!-- JOrigin -->
     <!-- for OpenCV, OpenCVNatives -->         
@@ -121,7 +115,7 @@
     <dependency>
       <groupId>org.jorigin</groupId>
       <artifactId>jvision-api</artifactId>
-      <version>${jvision.version}</version>
+      <version>1.0.0-SNAPSHOT</version>
     </dependency>
   
     <dependency>
