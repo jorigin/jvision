@@ -103,22 +103,44 @@
     <!--  Common package for basic operations -->
     <dependency>
       <groupId>org.jorigin</groupId>
+      <artifactId>jeometry-simple</artifactId>
+      <version>${jeometry.version}</version>
+    </dependency>
+    
+    
+    <dependency>
+      <groupId>org.jorigin</groupId>
       <artifactId>jvision-api</artifactId>
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
   
+    <!--  Test dependencies -->
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
+	  <groupId>org.jorigin</groupId>
+	  <artifactId>jvision-test</artifactId>
+	  <version>1.0.0-SNAPSHOT</version>
+	  <scope>test</scope>
+	</dependency>
+    
+	<dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter-api</artifactId>
+		<version>${junit.version}</version>
+		<scope>test</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter-engine</artifactId>
+		<version>${junit.version}</version>
+		<scope>test</scope>
+	</dependency>
+	
   </dependencies>
   
   <build>
     <plugins>
-    
-    
+     
       <!--  Compile sources -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -130,6 +152,12 @@
           <target>${maven.compiler.target}</target>
         </configuration>
       </plugin>
+    
+      <!-- Testing -->
+	  <plugin>
+	    <artifactId>maven-surefire-plugin</artifactId>
+		<version>${maven.plugin.surefire.version}</version>
+	  </plugin>
     
       <!-- Generate sources jar during package phase 
            equivalent to maven sources:jar -->
