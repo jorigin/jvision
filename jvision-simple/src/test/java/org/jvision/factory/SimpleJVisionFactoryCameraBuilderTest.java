@@ -12,7 +12,7 @@ import org.jvision.camera.distortion.SimpleLensDistortionOpenCV;
  * @version {@value JVision#version} b{@value JVision#BUILD}
  * @since 1.0.0
  */
-public class SimpleJVisionFactoryTest extends JVisionFactoryTest {
+public class SimpleJVisionFactoryCameraBuilderTest extends JVisionFactoryCameraBuilderTest {
 
 	/**
 	 * Initialize the tests

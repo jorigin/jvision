@@ -1,5 +1,6 @@
 package org.jvision.camera.distortion;
 
+import org.jeometry.math.Vector;
 import org.jvision.JVision;
 
 /**
@@ -54,8 +55,130 @@ import org.jvision.JVision;
 public interface LensDistortionMetashape extends LensDistortion {
 
 	/**
-	 * Get the first radial distortion coefficient <i>K<sub>1</sub></i>.
-	 * @return the first radial distortion coefficient <i>K<sub>1</sub></i>
+	 * Get the distortion parameters as the {@link Vector vector} (k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>) (6 dimensions). 
+	 * @return the distortion coefficients
+	 */
+	@Override
+	public Vector getDistortionCoefficients();
+	
+	/**
+	 * Get the distortion coefficients as a {@link Vector vector} by filling the given <code>coefficients</code>. 
+	 * Possible output vectors are:
+	 * <ul>
+	 *   <li>(k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>) (6 dimensions)
+	 *   <li>(k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>) (5 dimensions)
+	 *   <li>(k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>) (3 dimensions)
+	 * </ul>
+	 * @param coefficients the output vector that has to store distortion coefficients
+	 * @return a reference on the given vector, for chaining purposes
+	 * @throws IllegalArgumentException if the given vector does match the distortion implementation requirement
+	 */
+	@Override
+	public Vector getDistortionCoefficients(Vector coefficients) throws IllegalArgumentException;
+	
+	/**
+	 * Set the distortion coefficients from the given {@link Vector vector}. 
+	 * Accepted vectors are:
+	 * <ul>
+	 *   <li>(k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>) (6 dimensions)
+	 *   <li>(k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>) (5 dimensions)
+	 *   <li>(k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>) (3 dimensions)
+	 *   <li>null or empty vector for no distortion
+	 * </ul>
+	 * @param coefficients the distortion coefficients
+	 * @throws IllegalArgumentException if the input vector does match the distortion implementation requirement
+	 */
+	@Override
+	public void setDistortionCoefficients(Vector coefficients) throws IllegalArgumentException;
+	
+	/**
+	 * Get the distortion coefficients as a <code>float</code> array. 
+	 * Possible output vectors are:
+	 * <ul>
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>] (6 dimensions)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>] (5 dimensions)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>] (3 dimensions)
+	 * </ul>
+	 * @return the distortion coefficients
+	 */
+	@Override
+	public float[] getDistortionCoefficientsFloat();
+	
+	/**
+	 * Get the distortion coefficients as a <code>float</code> array by filling the given <code>coefficients</code>. 
+	 * Possible output arrays are:
+	 * <ul>
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 6)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 5)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>] (length 3)
+	 * </ul>
+	 * @param coefficients the output array that has to store distortion coefficients
+	 * @return a reference on the given array, for chaining purposes
+	 * @throws IllegalArgumentException if the given array does match the distortion implementation requirement
+	 */
+	@Override
+	public float[] getDistortionCoefficientsFloat(float[] coefficients) throws IllegalArgumentException;
+	
+	/**
+	 * Set the distortion coefficients from the given <code>float</code> array. 
+	 * Accepted arrays are:
+	 * <ul>
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 6)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 5)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>] (length 3)
+	 *   <li>null or empty array for no distortion
+	 * </ul>
+	 * @param coefficients the distortion coefficients
+	 * @throws IllegalArgumentException if the input array does match the distortion implementation requirement
+	 */
+	@Override
+	public void setDistortionCoefficients(float[] coefficients) throws IllegalArgumentException;
+	
+	/**
+	 * Get the distortion coefficients as a <code>double</code> array. 
+	 * Possible output arrays are:
+	 * <ul>
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 6)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 5)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>] (length 3)
+	 * </ul>
+	 * @return the distortion coefficients
+	 */
+	public double[] getDistortionCoefficientsDouble();
+	
+	/**
+	 * Get the distortion coefficients as a <code>double</code> array by filling the given <code>coefficients</code>. 
+	 * Possible output arrays are:
+	 * <ul>
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 6)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 5)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>] (length 3)
+	 * </ul>
+	 * @param coefficients the output array that has to store distortion coefficients
+	 * @return a reference on the given array, for chaining purposes
+	 * @throws IllegalArgumentException if the given array does match the distortion implementation requirement
+	 */
+	@Override
+	public double[] getDistortionCoefficientsDouble(double[] coefficients) throws IllegalArgumentException;
+	
+	/**
+	 * Set the distortion coefficients from the given <code>double</code> array. 
+	 * Accepted arrays are:
+	 * <ul>
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 6)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>, p<sub>1</sub>, p<sub>2</sub>] (length 5)
+	 *   <li>[k<sub>1</sub>, k<sub>2</sub>, k<sub>3</sub>] (length 3)
+	 *   <li>null or empty array for no distortion
+	 * </ul>
+	 * @param coefficients the distortion coefficients
+	 * @throws IllegalArgumentException if the input array does match the distortion implementation requirement
+	 */
+	@Override
+	public void setDistortionCoefficients(double[] coefficients) throws IllegalArgumentException;
+	
+	/**
+	 * Get the first radial distortion coefficient <i>k<sub>1</sub></i>.
+	 * @return the first radial distortion coefficient <i>k<sub>1</sub></i>
 	 * @see #setK1(double)
 	 * @see #getK2()
 	 * @see #getK3()
@@ -64,8 +187,8 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public double getK1();
 
 	/**
-	 * Set the first radial distortion coefficient <i>K<sub>1</sub></i>.
-	 * @param k1 the first radial distortion coefficient <i>K<sub>1</sub></i>
+	 * Set the first radial distortion coefficient <i>k<sub>1</sub></i>.
+	 * @param k1 the first radial distortion coefficient <i>k<sub>1</sub></i>
 	 * @see #getK1()
 	 * @see #setK2(double)
 	 * @see #setK3(double)
@@ -74,8 +197,8 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public void setK1(double k1);
 
 	/**
-	 * Get the second radial distortion coefficient <i>K<sub>2</sub></i>.
-	 * @return the second radial distortion coefficient <i>K<sub>2</sub></i>
+	 * Get the second radial distortion coefficient <i>k<sub>2</sub></i>.
+	 * @return the second radial distortion coefficient <i>k<sub>2</sub></i>
 	 * @see #setK2(double)
 	 * @see #getK1()
 	 * @see #getK3()
@@ -84,8 +207,8 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public double getK2();
 
 	/**
-	 * Set the second radial distortion coefficient <i>K<sub>2</sub></i>.
-	 * @param k2 the second radial distortion coefficient <i>K<sub>2</sub></i>
+	 * Set the second radial distortion coefficient <i>k<sub>2</sub></i>.
+	 * @param k2 the second radial distortion coefficient <i>k<sub>2</sub></i>
 	 * @see #getK2()
 	 * @see #setK1(double)
 	 * @see #setK3(double)
@@ -94,8 +217,8 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public void setK2(double k2);
 
 	/**
-	 * Get the third radial distortion coefficient <i>K<sub>3</sub></i>.
-	 * @return the third radial distortion coefficient <i>K<sub>3</sub></i>
+	 * Get the third radial distortion coefficient <i>k<sub>3</sub></i>.
+	 * @return the third radial distortion coefficient <i>k<sub>3</sub></i>
 	 * @see #setK3(double)
 	 * @see #getK1()
 	 * @see #getK2()
@@ -104,8 +227,8 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public double getK3();
 
 	/**
-	 * Set the third radial distortion coefficient <i>K<sub>3</sub></i>.
-	 * @param k3 the third radial distortion coefficient <i>K<sub>3</sub></i>
+	 * Set the third radial distortion coefficient <i>k<sub>3</sub></i>.
+	 * @param k3 the third radial distortion coefficient <i>k<sub>3</sub></i>
 	 * @see #getK3()
 	 * @see #setK1(double)
 	 * @see #setK2(double)
@@ -114,8 +237,8 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public void setK3(double k3);
 
 	/**
-	 * Get the fourth radial distortion coefficient <i>K<sub>4</sub></i>.
-	 * @return the fourth radial distortion coefficient <i>K<sub>4</sub></i>
+	 * Get the fourth radial distortion coefficient <i>k<sub>4</sub></i>.
+	 * @return the fourth radial distortion coefficient <i>k<sub>4</sub></i>
 	 * @see #setK4(double)
 	 * @see #getK1()
 	 * @see #getK2()
@@ -124,8 +247,8 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public double getK4();
 
 	/**
-	 * Set the fourth radial distortion coefficient <i>K<sub>4</sub></i>.
-	 * @param k4 the third radial distortion coefficient <i>K<sub>4</sub></i>
+	 * Set the fourth radial distortion coefficient <i>k<sub>4</sub></i>.
+	 * @param k4 the third radial distortion coefficient <i>k<sub>4</sub></i>
 	 * @see #getK4()
 	 * @see #setK1(double)
 	 * @see #setK2(double)
@@ -134,32 +257,32 @@ public interface LensDistortionMetashape extends LensDistortion {
 	public void setK4(double k4);
 
 	/**
-	 * Get the first tangential distortion coefficient <i>P<sub>1</sub></i>.
-	 * @return the first tangential distortion coefficient <i>P<sub>1</sub></i>
+	 * Get the first tangential distortion coefficient <i>p<sub>1</sub></i>.
+	 * @return the first tangential distortion coefficient <i>p<sub>1</sub></i>
 	 * @see #setP1(double)
 	 * @see #getP2()
 	 */
 	public double getP1();
 
 	/**
-	 * Set the first tangential distortion coefficient <i>P<sub>1</sub></i>.
-	 * @param p1 the first tangential distortion coefficient <i>P<sub>1</sub></i>
+	 * Set the first tangential distortion coefficient <i>p<sub>1</sub></i>.
+	 * @param p1 the first tangential distortion coefficient <i>p<sub>1</sub></i>
 	 * @see #getP1()
 	 * @see #setP2(double)
 	 */
 	public void setP1(double p1);
 
 	/**
-	 * Get the second tangential distortion coefficient <i>P<sub>2</sub></i>.
-	 * @return the second tangential distortion coefficient <i>P<sub>2</sub></i>
+	 * Get the second tangential distortion coefficient <i>p<sub>2</sub></i>.
+	 * @return the second tangential distortion coefficient <i>p<sub>2</sub></i>
 	 * @see #setP2(double)
 	 * @see #getP1()
 	 */
 	public double getP2();
 
 	/**
-	 * Set the second tangential distortion coefficient <i>P<sub>2</sub></i>.
-	 * @param p2 the second tangential distortion coefficient <i>P<sub>2</sub></i>
+	 * Set the second tangential distortion coefficient <i>p<sub>2</sub></i>.
+	 * @param p2 the second tangential distortion coefficient <i>p<sub>2</sub></i>
 	 * @see #getP2()
 	 * @see #setP1(double)
 	 */

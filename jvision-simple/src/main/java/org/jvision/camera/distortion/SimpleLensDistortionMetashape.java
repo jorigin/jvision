@@ -67,13 +67,13 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 	 */
 	private int distortionComponents        = LensDistortion.TYPE_NO_DISTORTION;
 
-	/** The K1 radial parameter.*/ private double k1 = 0.0d;
-	/** The K2 radial parameter.*/ private double k2 = 0.0d;
-	/** The K3 radial parameter.*/ private double k3 = 0.0d;
-	/** The K4 radial parameter.*/ private double k4 = 0.0d;
+	/** The k<sub>1</sub> radial parameter.*/ private double k1 = 0.0d;
+	/** The k<sub>2</sub> radial parameter.*/ private double k2 = 0.0d;
+	/** The k<sub>3</sub> radial parameter.*/ private double k3 = 0.0d;
+	/** The k<sub>4</sub> radial parameter.*/ private double k4 = 0.0d;
 
-	/** The P1 tangential parameter.*/ private double p1 = 0.0d;
-	/** The P2 tangential parameter.*/ private double p2 = 0.0d;
+	/** The p<sub>1</sub> tangential parameter.*/ private double p1 = 0.0d;
+	/** The p<sub>2</sub> tangential parameter.*/ private double p2 = 0.0d;
 
 	/**
 	 * Construct a new Agisoft Metashape lens distortion representation with no distortion. 
@@ -224,28 +224,12 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 		return corrected;
 	}
 
-	/**
-	 * Get the distortion parameters as the {@link Vector vector} (k1, k2, k3, k4, p1, p2) (6 dimensions). 
-	 * @return the distortion parameters
-	 */
 	@Override
 	public Vector getDistortionCoefficients() {
 		Vector v = getDistortionCoefficients(JeometryFactory.createVector(6));
 		return v;
 	}
 
-	/**
-	 * Get the distortion parameters as a {@link Vector vector} by filling the given <code>parameters</code>. 
-	 * Possible output vectors are:
-	 * <ul>
-	 *   <li>(k1, k2, k3, k4, p1, p2) (6 dimensions)
-	 *   <li>(k1, k2, k3, p1, p2) (5 dimensions)
-	 *   <li>(k1, k2, k3) (3 dimensions)
-	 * </ul>
-	 * @param parameters the output vector that has to store distortion parameters
-	 * @return a reference on the given vector, for chaining purposes
-	 * @throws IllegalArgumentException if the given vector does match the distortion implementation requirement
-	 */
 	@Override
 	public Vector getDistortionCoefficients(Vector parameters) throws IllegalArgumentException{
 		if (parameters != null) {
@@ -275,18 +259,6 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 		return parameters;
 	}
 
-	/**
-	 * Set the distortion parameters from the given {@link Vector vector}. 
-	 * Possible input vectors are:
-	 * <ul>
-	 *   <li>(k1, k2, k3, k4, p1, p2) (6 dimensions)
-	 *   <li>(k1, k2, k3, p1, p2) (5 dimensions)
-	 *   <li>(k1, k2, k3) (3 dimensions)
-	 *   <li>null or empty vector for no distortion
-	 * </ul>
-	 * @param parameters the distortion parameters
-	 * @throws IllegalArgumentException if the input vector does match the distortion implementation requirement
-	 */
 	@Override
 	public void setDistortionCoefficients(Vector parameters) throws IllegalArgumentException{
 		if ((parameters != null) && (parameters.getDimension() > 0)) {
@@ -308,27 +280,11 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 		}
 	}
 
-	/**
-	 * Get the distortion parameters as the <code>float</code> array [k1, k2, k3, k4, p1, p2] (length 6). 
-	 * @return the distortion parameters
-	 */
 	@Override
 	public float[] getDistortionCoefficientsFloat() {
 		return getDistortionCoefficientsFloat(new float[6]);
 	}
 
-	/**
-	 * Get the distortion parameters as a <code>float</code> array by filling the given <code>parameters</code>. 
-	 * Possible output arrays are:
-	 * <ul>
-	 *   <li>[k1, k2, k3, k4, p1, p2] (length 6)
-	 *   <li>[k1, k2, k3, p1, p2] (length 5)
-	 *   <li>[k1, k2, k3] (length 3)
-	 * </ul>
-	 * @param parameters the output array that has to store distortion parameters
-	 * @return a reference on the given array, for chaining purposes
-	 * @throws IllegalArgumentException if the given array does match the distortion implementation requirement
-	 */
 	@Override
 	public float[] getDistortionCoefficientsFloat(float[] parameters) throws IllegalArgumentException{
 		if (parameters != null) {
@@ -357,18 +313,6 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 		return parameters;
 	}
 
-	/**
-	 * Set the distortion parameters from the given <code>float</code> array. 
-	 * Possible input arrays are:
-	 * <ul>
-	 *   <li>[k1, k2, k3, k4, p1, p2] (length 6)
-	 *   <li>[k1, k2, k3, p1, p2] (length 5)
-	 *   <li>[k1, k2, k3] (length 3)
-	 *   <li>null or empty vector for no distortion
-	 * </ul>
-	 * @param parameters the distortion parameters
-	 * @throws IllegalArgumentException if the input array does match the distortion implementation requirement
-	 */
 	@Override
 	public void setDistortionCoefficients(float[] parameters) throws IllegalArgumentException{
 		if ((parameters != null) && (parameters.length > 0)) {
@@ -390,27 +334,12 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 		}
 	}
 
-	/**
-	 * Get the distortion parameters as the <code>double</code> array [k1, k2, k3, k4, p1, p2] (length 6).
-	 * @return the distortion parameters
-	 */
 	@Override
 	public double[] getDistortionCoefficientsDouble() {
 		return getDistortionCoefficientsDouble(new double[6]);
 	}
 
-	/**
-	 * Get the distortion parameters as a <code>double</code> array by filling the given <code>parameters</code>. 
-	 * Possible output arrays are:
-	 * <ul>
-	 *   <li>[k1, k2, k3, k4, p1, p2] (length 6)
-	 *   <li>[k1, k2, k3, p1, p2] (length 5)
-	 *   <li>[k1, k2, k3] (length 3)
-	 * </ul>
-	 * @param parameters the output array that has to store distortion parameters
-	 * @return a reference on the given array, for chaining purposes
-	 * @throws IllegalArgumentException if the given array does match the distortion implementation requirement
-	 */
+	@Override
 	public double[] getDistortionCoefficientsDouble(double[] parameters) throws IllegalArgumentException {
 		if (parameters != null) {
 			if (parameters.length == 6) {
@@ -438,18 +367,6 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 		return parameters;
 	}
 
-	/**
-	 * Set the distortion parameters from the given <code>double</code> array. 
-	 * Possible input arrays are:
-	 * <ul>
-	 *   <li>[k1, k2, k3, k4, p1, p2] (length 6)
-	 *   <li>[k1, k2, k3, p1, p2] (length 5)
-	 *   <li>[k1, k2, k3] (length 3)
-	 *   <li>null or empty vector for no distortion
-	 * </ul>
-	 * @param parameters the distortion parameters
-	 * @throws IllegalArgumentException if the input array does match the distortion implementation requirement
-	 */
 	@Override
 	public void setDistortionCoefficients(double[] parameters) throws IllegalArgumentException {
 		if ((parameters != null) && (parameters.length > 0)) {

@@ -6,6 +6,7 @@ import org.jvision.camera.distortion.LensDistortionBrown;
 import org.jvision.camera.distortion.LensDistortionMetashape;
 import org.jvision.camera.distortion.LensDistortionOpenCV;
 import org.jvision.camera.distortion.SimpleLensDistortionBrown;
+import org.jvision.camera.distortion.SimpleLensDistortionMetashape;
 import org.jvision.camera.distortion.SimpleLensDistortionOpenCV;
 
 /**
@@ -88,34 +89,29 @@ public class SimpleCameraBuilder implements CameraBuilder {
 
 	@Override
 	public LensDistortionMetashape createLensDistortionMetashape() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleLensDistortionMetashape();
 	}
 
 	@Override
 	public LensDistortionMetashape createLensDistortionMetashape(double k1, double k2, double k3, double k4, double p1,
 			double p2) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleLensDistortionMetashape(k1, k2, k3, k4, p1, p2);
 	}
 
 	@Override
 	public LensDistortionMetashape createLensDistortionMetashape(Vector coefficients) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleLensDistortionMetashape(coefficients);
 	}
 
 	@Override
 	public LensDistortionMetashape createLensDistortionMetashape(float[] coefficients) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleLensDistortionMetashape(coefficients);
 	}
 
 	@Override
 	public LensDistortionMetashape createLensDistortionMetashape(double[] coefficients)
 			throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimpleLensDistortionMetashape(coefficients);
 	}
 
 }
