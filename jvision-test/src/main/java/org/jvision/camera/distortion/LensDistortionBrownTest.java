@@ -55,7 +55,7 @@ public class LensDistortionBrownTest{
   
   static final double NUMERIC_PRECISION = 0.001d;
   
-  static final int STABILITY_ITERATION_COUNT = 1;
+  static final int STABILITY_ITERATION_COUNT = 10;
   
   static Class<?> lensDistortionImplementationClass = null;
   
@@ -85,7 +85,17 @@ public class LensDistortionBrownTest{
 	      observedPoints.add(JeometryFactory.createPoint2D(0.0d,   -i));
 	    }
 	    
-	    distortion = JVisionFactory.createLensDistortionBrown(-0.1047d, 0.25263d, -0.0385946d, 0.0d, 0.000508056d, -0.0027698d, 0.0d, 0.0d);
+	    try {
+			distortion = JVisionFactory.createLensDistortionBrown(LENS_DISTORTION_BROWN_COEFFICIENTS_ARRAY_DOUBLE);
+			
+			if (distortion == null) {
+		    	fail("Unable to instanciate a distortion.");
+		    }
+		} catch (IllegalArgumentException e) {
+			distortion = null;
+			fail("Unable to instanciate a distortion: "+e.getMessage(), e);
+		}
+  
   }
   
   /**

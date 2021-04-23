@@ -75,6 +75,8 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 	/** The p<sub>1</sub> tangential parameter.*/ private double p1 = 0.0d;
 	/** The p<sub>2</sub> tangential parameter.*/ private double p2 = 0.0d;
 
+	/** The maximum iterations to process when undistorting */ private int undistortIteraionsMax = 10;
+	
 	/**
 	 * Construct a new Agisoft Metashape lens distortion representation with no distortion. 
 	 * <br><br>
@@ -182,18 +184,23 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 		if (distorted != null) {
 
 			if (input != null) {
-				double r2 = input.getX()*input.getX()+input.getY()*input.getY();
-				double r4 = r2*r2; 
-				double r6 = r4*r2; 
-				double r8 = r4*r4;
+				
+				if (distortionComponents != LensDistortion.TYPE_NO_DISTORTION){
+					double r2 = input.getX()*input.getX()+input.getY()*input.getY();
+					double r4 = r2*r2; 
+					double r6 = r4*r2; 
+					double r8 = r4*r4;
 
-				double xp = input.getX()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*input.getX()*input.getX()) + 2*p2*input.getX()*input.getY());
+					double xp = input.getX()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*input.getX()*input.getX()) + 2*p2*input.getX()*input.getY());
 
-				double yp = input.getY()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*input.getY()*input.getY()) + 2*p1*input.getX()*input.getY()); 
+					double yp = input.getY()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*input.getY()*input.getY()) + 2*p1*input.getX()*input.getY()); 
 
-				distorted.setX(xp);
-				distorted.setY(yp);
-
+					distorted.setX(xp);
+					distorted.setY(yp);
+				} else {
+					distorted.setValues(input);
+				}
+				
 			} else {
 				distorted.setX(Double.NaN);
 				distorted.setY(Double.NaN);
@@ -212,15 +219,39 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 	public Point2D undistort(Point2D input, Point2D corrected) {
 
 		if (corrected != null) {
+			double x = input.getX();
+			double y = input.getY();
 
-			if (input != null) {
-				// TODO Implements Point2D undistort(Point2D input, Point2D corrected)
-			} else {
-				corrected.setX(Double.NaN);
-				corrected.setY(Double.NaN);
+			double xu = x;
+			double yu = y;
+
+			if (distortionComponents != LensDistortion.TYPE_NO_DISTORTION){
+
+				for(int i = 0; i < undistortIteraionsMax; i++){
+
+					// Compute the r factors.
+					double r2 = input.getX()*input.getX() + input.getY()*input.getY();
+					double r4 = r2 * r2;
+					double r6 = r2 * r4;
+					double r8 = r4 * r4;
+
+					// Correct tangential distortion
+					if ((distortionComponents & LensDistortion.TYPE_TANGENTIAL) != 0){
+						xu = x - (p1*(r2+2*input.getX()*input.getX()) + 2*p2*input.getX()*input.getY());
+						yu = y - (p1*(r2+2*input.getY()*input.getY()) + 2*p1*input.getX()*input.getY());
+					}
+
+					// Correct radial distortion
+					if ((distortionComponents & LensDistortion.TYPE_RADIAL) != 0){
+						xu = xu / (1+k1*r2 + k2*r4 + k3*r6 + k4*r8);
+						yu = yu / (1+k1*r2 + k2*r4 + k3*r6 + k4*r8);
+					}
+				}
 			}
-		}
 
+			corrected.setX(xu);
+			corrected.setY(yu);
+		}
 		return corrected;
 	}
 

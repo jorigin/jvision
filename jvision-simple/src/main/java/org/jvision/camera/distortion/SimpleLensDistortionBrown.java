@@ -208,7 +208,7 @@ public class SimpleLensDistortionBrown implements LensDistortionBrown{
 					}
 
 					// Correct radial distortion
-					if ((distortionComponents & LensDistortion.TYPE_TANGENTIAL) != 0){
+					if ((distortionComponents & LensDistortion.TYPE_RADIAL) != 0){
 						xu = xu / (1+k1*r2 + k2*r4 + k3*r6 + k4*r8);
 						yu = yu / (1+k1*r2 + k2*r4 + k3*r6 + k4*r8);
 					}
