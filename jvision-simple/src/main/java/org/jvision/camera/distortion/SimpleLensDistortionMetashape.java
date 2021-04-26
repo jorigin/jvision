@@ -174,31 +174,31 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 	}
 
 	@Override
-	public Point2D distort(Point2D input) {
-		return distort(input, JeometryFactory.createPoint2D());
+	public Point2D distort(Point2D undistorted) {
+		return distort(undistorted, JeometryFactory.createPoint2D());
 	}
 
 	@Override
-	public Point2D distort(Point2D input, Point2D distorted) {
+	public Point2D distort(Point2D undistorted, Point2D distorted) {
 
 		if (distorted != null) {
 
-			if (input != null) {
+			if (undistorted != null) {
 				
 				if (distortionComponents != LensDistortion.TYPE_NO_DISTORTION){
-					double r2 = input.getX()*input.getX()+input.getY()*input.getY();
+					double r2 = undistorted.getX()*undistorted.getX()+undistorted.getY()*undistorted.getY();
 					double r4 = r2*r2; 
 					double r6 = r4*r2; 
 					double r8 = r4*r4;
 
-					double xp = input.getX()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*input.getX()*input.getX()) + 2*p2*input.getX()*input.getY());
+					double xp = undistorted.getX()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*undistorted.getX()*undistorted.getX()) + 2*p2*undistorted.getX()*undistorted.getY());
 
-					double yp = input.getY()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*input.getY()*input.getY()) + 2*p1*input.getX()*input.getY()); 
+					double yp = undistorted.getY()*(1 + k1*r2 + k2*r4 + k3*r6 + k4*r8) + (p1*(r2+2*undistorted.getY()*undistorted.getY()) + 2*p1*undistorted.getX()*undistorted.getY()); 
 
 					distorted.setX(xp);
 					distorted.setY(yp);
 				} else {
-					distorted.setValues(input);
+					distorted.setValues(undistorted);
 				}
 				
 			} else {
@@ -211,16 +211,16 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 	}
 
 	@Override
-	public Point2D undistort(Point2D input) {
-		return undistort(input, JeometryFactory.createPoint2D());
+	public Point2D undistort(Point2D distorted) {
+		return undistort(distorted, JeometryFactory.createPoint2D());
 	}
 
 	@Override
-	public Point2D undistort(Point2D input, Point2D corrected) {
+	public Point2D undistort(Point2D distorted, Point2D undistorted) {
 
-		if (corrected != null) {
-			double x = input.getX();
-			double y = input.getY();
+		if (undistorted != null) {
+			double x = distorted.getX();
+			double y = distorted.getY();
 
 			double xu = x;
 			double yu = y;
@@ -230,15 +230,15 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 				for(int i = 0; i < undistortIteraionsMax; i++){
 
 					// Compute the r factors.
-					double r2 = input.getX()*input.getX() + input.getY()*input.getY();
+					double r2 = distorted.getX()*distorted.getX() + distorted.getY()*distorted.getY();
 					double r4 = r2 * r2;
 					double r6 = r2 * r4;
 					double r8 = r4 * r4;
 
 					// Correct tangential distortion
 					if ((distortionComponents & LensDistortion.TYPE_TANGENTIAL) != 0){
-						xu = x - (p1*(r2+2*input.getX()*input.getX()) + 2*p2*input.getX()*input.getY());
-						yu = y - (p1*(r2+2*input.getY()*input.getY()) + 2*p1*input.getX()*input.getY());
+						xu = x - (p1*(r2+2*distorted.getX()*distorted.getX()) + 2*p2*distorted.getX()*distorted.getY());
+						yu = y - (p1*(r2+2*distorted.getY()*distorted.getY()) + 2*p1*distorted.getX()*distorted.getY());
 					}
 
 					// Correct radial distortion
@@ -249,10 +249,10 @@ public class SimpleLensDistortionMetashape implements LensDistortionMetashape {
 				}
 			}
 
-			corrected.setX(xu);
-			corrected.setY(yu);
+			undistorted.setX(xu);
+			undistorted.setY(yu);
 		}
-		return corrected;
+		return undistorted;
 	}
 
 	@Override

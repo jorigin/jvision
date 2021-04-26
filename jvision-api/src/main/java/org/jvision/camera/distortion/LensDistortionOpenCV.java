@@ -1,5 +1,6 @@
 package org.jvision.camera.distortion;
 
+import org.jeometry.geom2D.point.Point2D;
 import org.jeometry.math.Vector;
 import org.jvision.JVision;
 
@@ -42,6 +43,89 @@ import org.jvision.JVision;
  */
 public interface LensDistortionOpenCV extends LensDistortion {
 
+	/**
+	 * Distort the given point (<i>x'</i>,&nbsp;<i>y'</i>) expressed wit focal normalized coordinates such as:<br>
+	 *  <table>
+     *  <caption>&nbsp;</caption>
+     *  <tr><td>                                               </td><td> </td><td> </td><td style="text-align: center;">x&nbsp;-&nbsp;c<sub>x</sub></td><td>       </td><td style="text-align: center;">y&nbsp;-&nbsp;c<sub>y</sub></td><td></td></tr>
+     *  <tr><td>(<i>x'</i>,&nbsp;<i>y'</i>)</td><td>=</td><td>(</td><td>          <hr>             </td><td>,&nbsp;</td><td>          <hr>             </td><td>)</td></tr>
+     *  <tr><td>                                               </td><td> </td><td> </td><td style="text-align: center;">f<sub>x</sub>              </td><td>       </td><td style="text-align: center;">f<sub>y</sub>              </td><td></td></tr>
+     *  </table>
+     *  where:<br>
+     *  <ul>
+     *  <li>(<i>x</i>,&nbsp;<i>y</i>) are the coordinates of the point on the undistorted image in pixels (px)
+     *  <li>(<i>c<sub>x</sub></i>,&nbsp;<i>c<sub>y</sub></i>) are the coordinates of the projection center on the image in pixels (px)
+     *  <li><i>f<sub>x</sub></i>, <i>f<sub>y</sub></i> are respectively the focal lengths along <i>X</i> and <i>Y</i> axis in pixels (px)
+     *  </ul>
+     * 
+     *  The distorted point (x'', y'') is such that:<br>
+     * 
+     *  <table>
+     *  <caption>&nbsp;</caption>
+     *  <tr><td>   </td><td> </td><td>  </td><td>       </td><td>1 + k<sub>1</sub>r<sup>2</sup> + k<sub>2</sub>r<sup>4</sup> + k<sub>3</sub>r<sup>6</sup></td><td> </td><td>                </td><td> </td><td>                                              </td><td> </td><td></td><td>                 </td><td>                                    </td></tr>
+     *  <tr><td>x''</td><td>=</td><td>x'</td><td>&times;</td><td><hr></td><td>+</td><td>2p<sub>1</sub>x'y'</td><td>+</td><td>p<sub>2</sub>(r<sup>2</sup>+2x'<sup>2</sup>)</td><td>+</td><td>s<sub>1</sub>r<sup>2</sup></td><td>+</td><td>s<sub>2</sub>r<sup>4</sup></td></tr>
+     *  <tr><td>   </td><td> </td><td>  </td><td>       </td><td>1 + k<sub>4</sub>r<sup>2</sup> + k<sub>5</sub>r<sup>4</sup> + k<sub>6</sub>r<sup>6</sup></td><td> </td><td>                </td><td> </td><td>                                              </td><td> </td><td>                          </td><td> </td><td>                          </td></tr>
+     *  </table>
+     *  <br>and<br>
+     *  <table>
+     *  <caption>&nbsp;</caption>
+     *  <tr><td>   </td><td> </td><td>  </td><td>       </td><td>1 + k<sub>1</sub>r<sup>2</sup> + k<sub>2</sub>r<sup>4</sup> + k<sub>3</sub>r<sup>6</sup></td><td> </td><td>                </td><td> </td><td>                                              </td><td> </td><td>                          </td><td> </td><td>                          </td></tr>
+     *  <tr><td>y''</td><td>=</td><td>y'</td><td>&times;</td><td><hr></td><td>+</td><td>p<sub>1</sub>(r<sup>2</sup>+2y'<sup>2</sup>)</td><td>+</td><td>2p<sub>2</sub>x'y'</td><td>+</td><td>s<sub>3</sub>r<sup>2</sup></td><td>+</td><td>s<sub>4</sub>r<sup>4</sup></td></tr>
+     *  <tr><td>   </td><td> </td><td>  </td><td>       </td><td>1 + k<sub>4</sub>r<sup>2</sup> + k<sub>5</sub>r<sup>4</sup> + k<sub>6</sub>r<sup>6</sup></td><td> </td><td>                </td><td> </td><td>                                              </td><td> </td><td>                          </td><td> </td><td>                          </td></tr>
+     *  </table>
+     * 
+     * with:<br>
+     * <ul>
+     * <li>(x', y') is the undistorted point expressed within focal normalized coordinates.
+     * <li>(x'', y'') is a point expressed within focal normalized coordinates that is affected by the distortion.
+     * <li>r<sup>2</sup> = x'<sup>2</sup> + y'<sup>2</sup>.
+     * <li>k<sub>1</sub>, ..., k<sub>6</sub> are the radial distortion coefficients.
+     * <li>p<sub>1</sub>, p<sub>2</sub> are the tangential distortion coefficients.
+     * <li>s<sub>1</sub>, s<sub>2</sub>, s<sub>3</sub> and s<sub>4</sub> are the thin prism distortion coefficients.
+     * </ul>
+     *  
+	 * If the <code>undistorted</code> point is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
+	 * @param undistorted the input point within focal normalized coordinates. 
+	 * @return the distorted point.
+	 * @see #undistort(Point2D)
+	 */
+	@Override
+	public Point2D distort(Point2D undistorted);
+
+	/**
+	 * Distort the <code>input</code> point and store the result within <code>output</code> point. 
+	 * The point have to be expressed within camera coordinates. 
+	 * If the input is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
+	 * @param undistorted the input point within camera coordinates. 
+	 * @param distorted the output point within camera coordinates. 
+	 * @return the distorted point (same reference as <code>output</code> if its not <code>null</code>).
+	 * @see #undistort(Point2D, Point2D)
+	 */
+	@Override
+	public Point2D distort(Point2D undistorted, Point2D distorted);
+
+	/**
+	 * Undistort the given point. The point have to be expressed within image coordinates.
+	 * If the input is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
+	 * @param distorted the input point within image coordinates. 
+	 * @return the undistorted point. 
+	 * @see #distort(Point2D)
+	 */
+	@Override
+	public Point2D undistort(Point2D distorted);
+
+	/**
+	 * Undistort the <code>input</code> point and store the result within <code>output</code> point. 
+	 * The point have to be expressed within image coordinates.
+	 * If the input is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
+	 * @param distorted the input point within image coordinates. 
+	 * @param undistorted the output point within camera coordinates. 
+	 * @return the undistorted point (same reference as <code>output</code> if its not <code>null</code>).
+	 * @see #distort(Point2D, Point2D)
+	 */
+	@Override
+	public Point2D undistort(Point2D distorted, Point2D undistorted);
+	
 	/**
 	 * Get the distortion parameters as the {@link Vector vector} 
 	 * (k<sub>1</sub>, k<sub>2</sub> , p<sub>1</sub>, p<sub>2</sub>, k<sub>3</sub>, k<sub>4</sub>, k<sub>5</sub>, k<sub>6</sub>, s<sub>1</sub>, s<sub>2</sub>, s<sub>3</sub>, s<sub>4</sub>, &tau;<sub>x</sub>, &tau;<sub>y</sub>) (14 dimensions). 

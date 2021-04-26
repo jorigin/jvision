@@ -55,7 +55,7 @@ public class LensDistortionBrownTest{
   
   static final double NUMERIC_PRECISION = 0.001d;
   
-  static final int STABILITY_ITERATION_COUNT = 10;
+  static final int STABILITY_ITERATION_COUNT = 1;
   
   static Class<?> lensDistortionImplementationClass = null;
   

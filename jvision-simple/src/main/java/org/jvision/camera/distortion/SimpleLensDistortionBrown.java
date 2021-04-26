@@ -127,16 +127,16 @@ public class SimpleLensDistortionBrown implements LensDistortionBrown{
 
 
 	@Override
-	public Point2D distort(Point2D input){
+	public Point2D distort(Point2D undistorted){
 
-		return distort(input, JeometryFactory.createPoint2D(0.0d,0.0d));
+		return distort(undistorted, JeometryFactory.createPoint2D(0.0d,0.0d));
 	}
 
 	@Override
-	public Point2D distort(Point2D input, Point2D distorted) {
+	public Point2D distort(Point2D undistorted, Point2D distorted) {
 		if (distorted != null) {
-			double x = input.getX();
-			double y = input.getY();
+			double x = undistorted.getX();
+			double y = undistorted.getY();
 
 			double xp = x;
 			double yp = y;
@@ -144,7 +144,7 @@ public class SimpleLensDistortionBrown implements LensDistortionBrown{
 			if (distortionComponents != LensDistortion.TYPE_NO_DISTORTION){
 
 				// Compute the r factors.
-				double r2 = input.getX()*input.getX() + input.getY()*input.getY();
+				double r2 = undistorted.getX()*undistorted.getX() + undistorted.getY()*undistorted.getY();
 				double r4 = r2 * r2;
 				double r6 = r2 * r4;
 				double r8 = r4 * r4;
@@ -177,16 +177,16 @@ public class SimpleLensDistortionBrown implements LensDistortionBrown{
 	}
 
 	@Override
-	public Point2D undistort(Point2D input){
+	public Point2D undistort(Point2D distorted){
 
-		return undistort(input, JeometryFactory.createPoint2D(0.0d, 0.0d));
+		return undistort(distorted, JeometryFactory.createPoint2D(0.0d, 0.0d));
 	}
 
 	@Override
-	public Point2D undistort(Point2D input, Point2D corrected) {
-		if (corrected != null) {
-			double x = input.getX();
-			double y = input.getY();
+	public Point2D undistort(Point2D distorted, Point2D undistorted) {
+		if (undistorted != null) {
+			double x = distorted.getX();
+			double y = distorted.getY();
 
 			double xu = x;
 			double yu = y;
@@ -196,7 +196,7 @@ public class SimpleLensDistortionBrown implements LensDistortionBrown{
 				for(int i = 0; i < iterationMax; i++){
 
 					// Compute the r factors.
-					double r2 = input.getX()*input.getX() + input.getY()*input.getY();
+					double r2 = distorted.getX()*distorted.getX() + distorted.getY()*distorted.getY();
 					double r4 = r2 * r2;
 					double r6 = r2 * r4;
 					double r8 = r4 * r4;
@@ -215,10 +215,10 @@ public class SimpleLensDistortionBrown implements LensDistortionBrown{
 				}
 			}
 
-			corrected.setX(xu);
-			corrected.setY(yu);
+			undistorted.setX(xu);
+			undistorted.setY(yu);
 		}
-		return corrected;
+		return undistorted;
 	}
 
 	/**

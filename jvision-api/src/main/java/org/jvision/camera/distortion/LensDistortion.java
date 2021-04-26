@@ -103,42 +103,42 @@ public interface LensDistortion {
 	/**
 	 * Distort the given point. The point have to be expressed within camera coordinates. 
 	 * If the input is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
-	 * @param input the input point within camera coordinates. 
+	 * @param undistorted the input point within camera coordinates. 
 	 * @return the distorted point.
 	 * @see #undistort(Point2D)
 	 */
-	public Point2D distort(Point2D input);
+	public Point2D distort(Point2D undistorted);
 
 	/**
 	 * Distort the <code>input</code> point and store the result within <code>output</code> point. 
 	 * The point have to be expressed within camera coordinates. 
 	 * If the input is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
-	 * @param input the input point within camera coordinates. 
+	 * @param undistorted the input point within camera coordinates. 
 	 * @param distorted the output point within camera coordinates. 
 	 * @return the distorted point (same reference as <code>output</code> if its not <code>null</code>).
 	 * @see #undistort(Point2D, Point2D)
 	 */
-	public Point2D distort(Point2D input, Point2D distorted);
+	public Point2D distort(Point2D undistorted, Point2D distorted);
 
 	/**
 	 * Undistort the given point. The point have to be expressed within image coordinates.
 	 * If the input is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
-	 * @param input the input point within image coordinates. 
+	 * @param distorted the input point within image coordinates. 
 	 * @return the undistorted point. 
 	 * @see #distort(Point2D)
 	 */
-	public Point2D undistort(Point2D input);
+	public Point2D undistort(Point2D distorted);
 
 	/**
 	 * Undistort the <code>input</code> point and store the result within <code>output</code> point. 
 	 * The point have to be expressed within image coordinates.
 	 * If the input is <code>null</code>, coordinates of the result are set to {@link Double#NaN}.
-	 * @param input the input point within image coordinates. 
-	 * @param corrected the output point within camera coordinates. 
+	 * @param distorted the input point within image coordinates. 
+	 * @param undistorted the output point within camera coordinates. 
 	 * @return the undistorted point (same reference as <code>output</code> if its not <code>null</code>).
 	 * @see #distort(Point2D, Point2D)
 	 */
-	public Point2D undistort(Point2D input, Point2D corrected);
+	public Point2D undistort(Point2D distorted, Point2D undistorted);
 	
 	/**
 	 * Get the distortion coefficients as a {@link Vector vector}. 

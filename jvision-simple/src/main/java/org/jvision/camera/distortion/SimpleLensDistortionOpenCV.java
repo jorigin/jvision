@@ -2,6 +2,7 @@ package org.jvision.camera.distortion;
 
 import org.jeometry.factory.JeometryFactory;
 import org.jeometry.geom2D.point.Point2D;
+import org.jeometry.geom3D.point.Point3D;
 import org.jeometry.math.Matrix;
 import org.jeometry.math.Vector;
 import org.jvision.JVision;
@@ -99,9 +100,9 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 	 * </ul>
 	 */
 	public SimpleLensDistortionOpenCV() {
-		
+
 	}
-	
+
 	/**
 	 * Create a new distortion representation based on {@link LensDistortionOpenCV OpenCV formalization} with given coefficients.<br><br>
 	 * An OpenCV distortion is made of 4 components:
@@ -131,7 +132,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 		this();
 		setDistortionCoefficients(k1, k2, k3, k4, k5, k6, p1, p2, s1, s2, s3, s4, tx, ty);
 	}
-	
+
 	/**
 	 * Create a new distortion representation based on {@link LensDistortionOpenCV OpenCV formalization} with given coefficients.<br><br>
 	 * An OpenCV distortion is made of 4 components:
@@ -159,7 +160,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 		this();
 		setDistortionCoefficients(k1, k2, k3, k4, k5, k6, p1, p2, s1, s2, s3, s4);
 	}
-	
+
 	/**
 	 * Create a new distortion representation based on {@link LensDistortionOpenCV OpenCV formalization} with given coefficients.<br><br>
 	 * An OpenCV distortion is made of 4 components:
@@ -183,7 +184,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 		this();
 		setDistortionCoefficients(k1, k2, k3, k4, k5, k6, p1, p2);
 	}
-	
+
 	/**
 	 * Create a new distortion representation based on {@link LensDistortionOpenCV OpenCV formalization} with given coefficients.<br><br>
 	 * An OpenCV distortion is made of 4 components:
@@ -203,7 +204,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 		this();
 		setDistortionCoefficients(k1, k2, k3, p1, p2);
 	}
-	
+
 	/**
 	 * Create a new distortion representation based on {@link LensDistortionOpenCV OpenCV formalization} with given coefficients.<br><br>
 	 * An OpenCV distortion is made of 4 components:
@@ -229,7 +230,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 		this();
 		setDistortionCoefficients(coefficients);
 	}
-	
+
 	/**
 	 * Create a new distortion representation based on {@link LensDistortionOpenCV OpenCV formalization} with given coefficients.<br><br>
 	 * An OpenCV distortion is made of 4 components:
@@ -255,7 +256,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 		this();
 		setDistortionCoefficients(coefficients);
 	}
-	
+
 	/**
 	 * Create a new distortion representation based on {@link LensDistortionOpenCV OpenCV formalization} with given coefficients.<br><br>
 	 * An OpenCV distortion is made of 4 components:
@@ -281,7 +282,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 		this();
 		setDistortionCoefficients(coefficients);
 	}
-	
+
 	@Override
 	public String getDistortionConvention() {
 		return distortionConvention;
@@ -293,105 +294,191 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 	}
 
 	@Override
-	public Point2D distort(Point2D input, Point2D distorted) {
+	public Point2D distort(Point2D undistorted, Point2D distorted) {
 		if (distorted != null) {
-			double r2 = input.getX()*input.getX() + input.getY()+input.getY();
-			double r4 = r2*r2;
-			double r6 = r2*r4;
+			
+			if (undistorted == null) {
+				distorted.setX(Double.NaN);
+				distorted.setY(Double.NaN);
+			} else {
+				
+				double r2 = undistorted.getX()*undistorted.getX() + undistorted.getY()+undistorted.getY();
+				double r4 = r2*r2;
+				double r6 = r2*r4;
+				
+				if (distortionComponents == LensDistortion.TYPE_NO_DISTORTION) {
+					distorted.setX(undistorted.getX());
+					distorted.setY(undistorted.getY());
+				} else {
 
-			// Radial distortion
-			distorted.setX(input.getX()*((1+ k1*r2 + k2*r4 + k3*r6)/(1+ k4*r2 + k5*r4 + k6*r6)));
-			distorted.setY(input.getY()*((1+ k1*r2 + k2*r4 + k3*r6)/(1+ k4*r2 + k5*r4 + k6*r6)));
+					// Radial distortion
+					if ((distortionComponents & LensDistortion.TYPE_RADIAL) != 0) {
+						distorted.setX(undistorted.getX()*((1+ k1*r2 + k2*r4 + k3*r6)/(1+ k4*r2 + k5*r4 + k6*r6)));
+						distorted.setY(undistorted.getY()*((1+ k1*r2 + k2*r4 + k3*r6)/(1+ k4*r2 + k5*r4 + k6*r6)));
+					}
 
-			// Tangential distortion
-			distorted.setX(distorted.getX() + 2*p1*input.getX()*input.getY() + p2*(r2 + 2*input.getX()*input.getX())); 
-			distorted.setY(distorted.getY() +  p1*(r2 + 2*input.getY()*input.getY())+2*p2*input.getX()*input.getY()); 
+					// Tangential distortion
+					if ((distortionComponents & LensDistortion.TYPE_TANGENTIAL) != 0) {
+						distorted.setX(distorted.getX() + 2*p1*undistorted.getX()*undistorted.getY() + p2*(r2 + 2*undistorted.getX()*undistorted.getX())); 
+						distorted.setY(distorted.getY() +  p1*(r2 + 2*undistorted.getY()*undistorted.getY())+2*p2*undistorted.getX()*undistorted.getY()); 
+					}
 
-			// Prism distortion
-			distorted.setX(distorted.getX() +  s1*r2 + s2*r4);
-			distorted.setY(distorted.getY() +  s3*r2 + s4*r4);
+					// Prism distortion
+					if ((distortionComponents & LensDistortion.TYPE_PRISM) != 0) {
+						distorted.setX(distorted.getX() +  s1*r2 + s2*r4);
+						distorted.setY(distorted.getY() +  s3*r2 + s4*r4);
+					}
+				}
+			}
 		}
 		return distorted;
 	}
 
 	@Override
-	public Point2D distort(Point2D input) {    
-		return distort(input, JeometryFactory.createPoint2D(0.0d, 0.0d));
+	public Point2D distort(Point2D undistorted) {    
+		return distort(undistorted, JeometryFactory.createPoint2D(0.0d, 0.0d));
 	}
 
 	@Override
-	public Point2D undistort(Point2D input) {
-		return undistort(input, JeometryFactory.createPoint2D(input.getX(), input.getY()));
+	public Point2D undistort(Point2D distorted) {
+		return undistort(distorted, JeometryFactory.createPoint2D(distorted.getX(), distorted.getY()));
 	}
 
-
 	@Override
-	public Point2D undistort(Point2D input, Point2D corrected) {
+	public Point2D undistort(Point2D distorted, Point2D corrected) {
 
-		//TODO Implements undistort(Point2D, Point2D) for all parameters
+		Matrix cameraMatrix = null; //TODO TO REMOVE
 
-		if (corrected != null) {
-			double x = input.getX();
-			double y = input.getY();
+		Matrix invMatTilt = JeometryFactory.createMatrixEye(3);
+		Matrix matTilt = JeometryFactory.createMatrixEye(3);
 
-			double x0 = x;
-			double y0 = x;
+		if (corrected == null) {
+			return null;
+		}
 
-			double error = 0;
+		if (distorted == null) {
+			corrected.setX(Double.NaN);
+			corrected.setY(Double.NaN);
+			return corrected;
+		}
 
-			for( int j = 0; ; j++ ){
-				if ( j >= iterationsMax)
+		if( (distortionComponents & LensDistortion.TYPE_TILT) != 0) {
+
+			if (tx != 0 || ty != 0) {
+				computeTiltProjectionMatrix(tx, ty, null, null, null, invMatTilt);
+				computeTiltProjectionMatrix(tx, ty, matTilt, null, null, null);
+			}
+		}
+
+		double fx = cameraMatrix.getValue(0, 0);
+		double fy = cameraMatrix.getValue(1, 1);
+		double ifx = 1./fx;
+		double ify = 1./fy;
+		double cx = cameraMatrix.getValue(0, 2);
+		double cy = cameraMatrix.getValue(1, 2);
+
+		double x0 = 0;
+		double y0 = 0;
+
+		double x = distorted.getX();
+		double y = distorted.getY();
+
+		double u = x; 
+		double v = y;
+
+		// Express point within focal normalized coordinates
+		x = (x - cx)*ifx;
+		y = (y - cy)*ify;
+
+		if(distortionComponents != LensDistortion.TYPE_NO_DISTORTION) {
+
+			// compensate tilt distortion
+			if ((distortionComponents & LensDistortion.TYPE_TILT) != 0) {
+				Vector distortedVector = JeometryFactory.createPoint3D(x, y, 1);
+				Vector correctedVector = JeometryFactory.createPoint3D(0, 0, 0);
+
+				Vector vecUntilt = invMatTilt.multiply(distortedVector, correctedVector);
+
+				double invProj = (vecUntilt.getValue(2) != 0) ? 1./vecUntilt.getValue(2) : 1;
+				x = invProj * vecUntilt.getValue(0);
+				y = invProj * vecUntilt.getValue(1);
+			}
+
+			x0 = x;
+			y0 = y;
+
+			double error = Double.MAX_VALUE;
+
+			// compensate distortion iteratively
+			for( int j = 0; ; j++ ) {
+
+				// Stop if the maximum number of iterations is reached.
+				if (j >= iterationsMax)
 					break;
+
+				// Stop if the precision criteria is reach
 				if (error < epsilon)
 					break;
 
-				double r2     = x*x + y*y;
-
+				double r2 = x*x + y*y;
 				double icdist = (1 + ((k6*r2 + k5)*r2 + k4)*r2)/(1 + ((k3*r2 + k2)*r2 + k1)*r2);
 
-				double deltaX = 2*p1*x*y + p2*(r2 + 2*x*x)+ s1*r2+s2*r2*r2;
+				// test: undistortPoints.regression_14583
+				if (icdist < 0)  {
+					x = (u - cx)*ifx;
+					y = (v - cy)*ify;
+					break;
+				}
 
-				double deltaY = p2*(r2 + 2*y*y) + 2*p2*x*y+ s3*r2+s4*r2*r2;
+				double deltaX = 2*p1*x*y + p2*(r2 + 2*x*x)+ s1*r2+s2*r2*r2;
+				double deltaY = p1*(r2 + 2*y*y) + 2*p2*x*y+ s3*r2+s4*r2*r2;
 
 				x = (x0 - deltaX)*icdist;
 				y = (y0 - deltaY)*icdist;
 
+				double r4, r6, a1, a2, a3, cdist, icdist2;
 
-				if ((k4 != 0.0d) && (k5 != 0.0d) && (k6 != 0.0d)) {
-					/*
-  	  	      double r4, r6, a1, a2, a3, cdist, icdist2;
+				Point3D pd0;
 
-  	  	      double xd, yd, xd0, yd0;
+				double xd, yd;
+				Vector vecTilt;
 
-  	  	      double[] vecTilt;
+				r2 = x*x + y*y;
+				r4 = r2*r2;
+				r6 = r4*r2;
+				a1 = 2*x*y;
+				a2 = r2 + 2*x*x;
+				a3 = r2 + 2*y*y;
+				cdist = 1 + k1*r2 + k2*r4 + k3*r6;
+				icdist2 = 1./(1 + k4*r2 + k5*r4 + k6*r6);
 
-  	  	      r2 = x*x + y*y;
-  	  	      r4 = r2*r2;
-  	  	      r6 = r4*r2;
-  	  	      a1 = 2*x*y;
-  	  	      a2 = r2 + 2*x*x;
-  	  	      a3 = r2 + 2*y*y;
-  	  	      cdist = 1 + k1*r2 + k2*r4 + k3*r6;
-  	  	      icdist2 = 1./(1 + k4*r2 + k5*r4 + k6*r6);
-  	  	      xd0 = x*cdist*icdist2 + p1*a1 + p2*a2 + s1*r2+s2*r4;
-  	  	      yd0 = y*cdist*icdist2 + p1*a3 + p2*a1 + s3*r2+s4*r4;
+				pd0 = JeometryFactory.createPoint3D(x*cdist*icdist2 + p1*a1 + p2*a2 + s1*r2+s2*r4, 
+						y*cdist*icdist2 + p1*a3 + p2*a1 + s3*r2+s4*r4,
+						1);
 
-  	  	      vecTilt = matTilt*cv::Vec3d(xd0, yd0, 1);
-  	  	      invProj = vecTilt(2) ? 1./vecTilt(2) : 1;
-  	  	      xd = invProj * vecTilt(0);
-  	  	      yd = invProj * vecTilt(1);
+				if ((distortionComponents & LensDistortion.TYPE_TILT) != 0) {
 
-  	  	      double x_proj = xd*fx + cx;
-  	  	      double y_proj = yd*fy + cy;
-
-  	  	      error = Math.sqrt( Math.pow(x_proj - u, 2) + Math.pow(y_proj - v, 2) );
-					 */
+					vecTilt = matTilt.multiply(pd0);
+					double invProj = (vecTilt.getValue(2) != 0) ? 1./vecTilt.getValue(2) : 1;
+					xd = invProj * vecTilt.getValue(0);
+					yd = invProj * vecTilt.getValue(1);
+				} else {
+					xd = pd0.getX();
+					yd = pd0.getY();
 				}
-			}
 
-			corrected.setX(x);
-			corrected.setY(y);
+
+				double x_proj = xd*fx + cx;
+				double y_proj = yd*fy + cy;
+
+				error = Math.sqrt( Math.pow(x_proj - u, 2) + Math.pow(y_proj - v, 2) );
+
+			}
 		}
+
+		corrected.setX(x);
+		corrected.setY(y);
+
 
 		return corrected;
 	}
@@ -891,7 +978,7 @@ public class SimpleLensDistortionOpenCV implements LensDistortionOpenCV {
 	public void setDistortionCoefficients(double k1, double k2, double k3, double p1, double p2) {
 		setDistortionCoefficients(k1, k2, k3, 0.0d, 0.0d, 0.0d, p1, p2, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d);
 	}
-	
+
 	/**
 	 * Compute the tilt distortion
 	 * @param tauX the tauX parameter
