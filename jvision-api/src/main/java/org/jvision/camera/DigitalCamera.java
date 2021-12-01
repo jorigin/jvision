@@ -58,6 +58,21 @@ import org.jvision.sensor.camera.DigitalCameraSensor;
  */
 public interface DigitalCamera extends Named, Identified, HandleUserProperties {
 
+	
+	/**
+	 * Get the name of the camera.
+	 * @return the name of the camera.
+	 * @see #setName(String)
+	 */
+	public abstract String getName();
+
+	/**
+	 * Set the name of the camera.
+	 * @param name the name of the camera.
+	 */
+	public abstract void setName(String name);
+
+	
 	/**
 	 * Get the model of the camera.
 	 * @return the model of the camera.

@@ -53,7 +53,7 @@
     <maven.plugin.source.version>3.2.0</maven.plugin.source.version>
     <maven.plugin.surefire.version>3.0.0-M4</maven.plugin.surefire.version>
     
-    <jcommon.version>1.0.13</jcommon.version>
+    <jcommon.version>1.0.14</jcommon.version>
     <jeometry.version>1.0.6-SNAPSHOT</jeometry.version>   
     
     <junit.version>5.7.1</junit.version>
