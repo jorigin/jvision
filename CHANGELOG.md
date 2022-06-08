@@ -19,7 +19,7 @@
 - Refactor make all xxxAffect() methods to return a reference on the object instead of `void` in order to chain processing
 - Refactor make all setValue(s) methods to return a reference on the object for chaining purpose
 
-## [1.0.0](https://github.com/jorigin/jeometry/releases/tag/release-1.0.4)
+## [1.0.4](https://github.com/jorigin/jeometry/releases/tag/release-1.0.4)
 ### Added
 ### Changed
 ### Removed
